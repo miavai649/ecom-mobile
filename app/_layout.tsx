@@ -5,7 +5,10 @@ import '@/global.css'
 const RootLayout = () => {
   return (
     <GluestackUIProvider>
-      <Stack />
+      <Stack>
+        <Stack.Screen name='index' options={{ title: 'Shop' }} />
+        <Stack.Screen name='product/[id]' options={{ title: 'Product' }} />
+      </Stack>
     </GluestackUIProvider>
   )
 }
