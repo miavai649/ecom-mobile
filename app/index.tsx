@@ -6,13 +6,13 @@ import { Button, ButtonText } from '@/components/ui/button'
 
 const Home = () => {
   return (
-    // <FlatList
-    //   data={products}
-    //   renderItem={({ item }) => <ProductListItem item={item} />}
-    // />
-    <Button size='md' variant='outline' action='positive'>
-      <ButtonText>Hello World!</ButtonText>
-    </Button>
+    <FlatList
+      data={products}
+      numColumns={2}
+      contentContainerClassName='gap-2'
+      columnWrapperClassName='gap-2'
+      renderItem={({ item }) => <ProductListItem product={item} />}
+    />
   )
 }
 
