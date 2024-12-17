@@ -2,7 +2,6 @@ import { FlatList, Text } from 'react-native'
 import React from 'react'
 import products from '../assets/products.json'
 import ProductListItem from '../components/ProductListItem'
-import { Button, ButtonText } from '@/components/ui/button'
 
 const Home = () => {
   return (
