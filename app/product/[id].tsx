@@ -14,8 +14,6 @@ const ProductDetails = () => {
   const { id } = useLocalSearchParams()
 
   const addProduct = useCart((state) => state.addProduct)
-  const cartItems = useCart((state) => state.items)
-  console.log('🚀 ~ ProductDetails ~ cartItems:', cartItems)
 
   const product = products.find((p) => p.id === Number(id))
 
