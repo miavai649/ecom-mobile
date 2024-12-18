@@ -1,4 +1,4 @@
-import { FlatList } from 'react-native'
+import { FlatList, Image } from 'react-native'
 import React from 'react'
 import { useCart } from '@/store/cartStore'
 import { Text } from '@/components/ui/text'
@@ -65,6 +65,14 @@ const cart = () => {
       contentContainerClassName='gap-2 max-w-[960px] w-full mx-auto px-5'
       renderItem={({ item }) => (
         <HStack className='bg-white p-4 rounded-lg shadow-md items-center'>
+          <Image
+            source={{
+              uri: item.product.image
+            }}
+            className='w-[70px] h-[70px] mr-5 rounded-full'
+            alt={`${item.product.name} image`}
+            resizeMode='cover'
+          />
           <VStack space='sm' className='flex-1'>
             <Text bold className='text-lg text-gray-800'>
               {item.product.name}

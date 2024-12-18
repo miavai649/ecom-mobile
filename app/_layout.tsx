@@ -29,16 +29,18 @@ const RootLayout = () => {
                   </Pressable>
                 </Link>
               )}
-              <Link href={'/wishList'} asChild>
-                <Pressable className='flex-row '>
-                  <Icon
-                    as={Heart}
-                    size='lg'
-                    className='fill-pink-500 stroke-none'
-                  />
-                  <Text>{wishListItemNum}</Text>
-                </Pressable>
-              </Link>
+              {wishListItemNum > 0 && (
+                <Link href={'/wishList'} asChild>
+                  <Pressable className='flex-row '>
+                    <Icon
+                      as={Heart}
+                      size='lg'
+                      className='fill-pink-500 stroke-none'
+                    />
+                    <Text>{wishListItemNum}</Text>
+                  </Pressable>
+                </Link>
+              )}
             </HStack>
           )
         }}>
