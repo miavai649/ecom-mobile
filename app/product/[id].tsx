@@ -1,5 +1,5 @@
 import React from 'react'
-import { Redirect, Stack, useLocalSearchParams } from 'expo-router'
+import { Stack, useLocalSearchParams, useRouter } from 'expo-router'
 import products from '@/assets/products.json'
 import { Card } from '@/components/ui/card'
 import { Image } from '@/components/ui/image'
@@ -12,15 +12,18 @@ import { useCart } from '@/store/cartStore'
 import { useAuth } from '@/store/authStore'
 import { Toast, ToastTitle, useToast } from '@/components/ui/toast'
 import { Icon } from '@/components/ui/icon'
-import { Check, ShoppingCart } from 'lucide-react-native'
+import { Check, Heart, ShoppingCart } from 'lucide-react-native'
 import { Divider } from '@/components/ui/divider'
+import { useWishList } from '@/store/wishListStore'
 
 const ProductDetails = () => {
   const { id } = useLocalSearchParams()
 
   const addProduct = useCart((state) => state.addProduct)
+  const addProductToWishList = useWishList((state) => state.addProduct)
   const isLoggedIn = useAuth((s) => s.isAuthenticated)
   const toast = useToast()
+  const router = useRouter()
 
   const product = products.find((p) => p.id === Number(id))
 
@@ -28,9 +31,44 @@ const ProductDetails = () => {
     return <Text>Product not found</Text>
   }
 
+  const addToWishList = () => {
+    if (!isLoggedIn) {
+      router.push('/login')
+      return
+    }
+
+    toast.show({
+      placement: 'bottom',
+      render: ({ id }) => {
+        const toastId = 'toast-' + id
+        return (
+          <Toast
+            nativeID={toastId}
+            className='px-5 py-2 gap-4 shadow-soft-1 items-center flex-row bg-pink-500 text-white rounded-md'>
+            <Icon
+              as={Heart} // Use a heart icon for wishlist
+              size='xl'
+              className='fill-white stroke-none'
+            />
+            <Divider
+              orientation='vertical'
+              className='h-[30px] bg-white opacity-50'
+            />
+            <ToastTitle size='sm' className='font-semibold'>
+              Product added to wishlist
+            </ToastTitle>
+          </Toast>
+        )
+      }
+    })
+
+    addProductToWishList(product)
+  }
+
   const addToCart = () => {
     if (!isLoggedIn) {
-      return <Redirect href={'/login'} />
+      router.push('/login')
+      return
     }
 
     toast.show({
@@ -89,6 +127,7 @@ const ProductDetails = () => {
             <ButtonText size='sm'>Add to cart</ButtonText>
           </Button>
           <Button
+            onPress={addToWishList}
             variant='outline'
             className='px-4 py-2 border-outline-300 sm:flex-1'>
             <ButtonText size='sm' className='text-typography-600'>
