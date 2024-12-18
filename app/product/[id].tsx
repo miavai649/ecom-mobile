@@ -34,13 +34,13 @@ const ProductDetails = () => {
     }
 
     toast.show({
-      placement: 'top',
+      placement: 'bottom',
       render: ({ id }) => {
         const toastId = 'toast-' + id
         return (
           <Toast
             nativeID={toastId}
-            className='px-5 py-3 gap-4 shadow-soft-1 items-center flex-row bg-success-500 text-white rounded-md'>
+            className='px-5 py-2 gap-4 shadow-soft-1 items-center flex-row bg-success-500 text-white rounded-md'>
             <Icon
               as={ShoppingCart}
               size='xl'
