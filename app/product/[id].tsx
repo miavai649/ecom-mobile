@@ -1,5 +1,5 @@
 import React from 'react'
-import { Stack, useLocalSearchParams } from 'expo-router'
+import { Redirect, Stack, useLocalSearchParams } from 'expo-router'
 import products from '@/assets/products.json'
 import { Card } from '@/components/ui/card'
 import { Image } from '@/components/ui/image'
@@ -9,11 +9,18 @@ import { Heading } from '@/components/ui/heading'
 import { Button, ButtonText } from '@/components/ui/button'
 import { Box } from '@/components/ui/box'
 import { useCart } from '@/store/cartStore'
+import { useAuth } from '@/store/authStore'
+import { Toast, ToastTitle, useToast } from '@/components/ui/toast'
+import { Icon } from '@/components/ui/icon'
+import { Check, ShoppingCart } from 'lucide-react-native'
+import { Divider } from '@/components/ui/divider'
 
 const ProductDetails = () => {
   const { id } = useLocalSearchParams()
 
   const addProduct = useCart((state) => state.addProduct)
+  const isLoggedIn = useAuth((s) => s.isAuthenticated)
+  const toast = useToast()
 
   const product = products.find((p) => p.id === Number(id))
 
@@ -22,6 +29,35 @@ const ProductDetails = () => {
   }
 
   const addToCart = () => {
+    if (!isLoggedIn) {
+      return <Redirect href={'/login'} />
+    }
+
+    toast.show({
+      placement: 'top',
+      render: ({ id }) => {
+        const toastId = 'toast-' + id
+        return (
+          <Toast
+            nativeID={toastId}
+            className='px-5 py-3 gap-4 shadow-soft-1 items-center flex-row bg-success-500 text-white rounded-md'>
+            <Icon
+              as={ShoppingCart}
+              size='xl'
+              className='fill-white stroke-none'
+            />
+            <Divider
+              orientation='vertical'
+              className='h-[30px] bg-white opacity-50'
+            />
+            <ToastTitle size='sm' className='font-semibold'>
+              Product added to cart
+            </ToastTitle>
+          </Toast>
+        )
+      }
+    })
+
     addProduct(product)
   }
 
